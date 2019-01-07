@@ -2,6 +2,7 @@
 
 import _pickle
 import inspect
+import os
 
 from portrait.settings import *
 from portrait.tool.public import Entrance
@@ -26,6 +27,17 @@ def dump(data, name):
     if Mode.savePKL:
         enter = Entrance()
         pcid, cid, _ = enter.params
+        path = FileBase.result[: -10].format(pcid=pcid, cid=cid)
+        try:
+            os.makedirs(path)
+        except (FileExistsError, FileNotFoundError) as e:
+            print(path, "is exist")
+        except Exception as e:
+            raise e
+        else:
+            print("create", path, "success")
+        finally:
+            pass
         with open(FileBase.result.format(pcid=pcid, cid=cid, name=name), mode="wb") as fp:
             _pickle.dump(data, fp)
 
@@ -66,3 +78,8 @@ def make_trantab(src, dst=""):
     for item in src:
         trantab[ord(item)] = dst
     return trantab
+
+
+if __name__ == '__main__':
+    Entrance(pcid="0", cid="0", datamonth="0")
+    dump(1, "1")
