@@ -22,7 +22,8 @@ class StoreTreeFrame(StoreMethod):
             base = '{"name": "' + name + '", "children":['
             file = FileBase.result.format(
                 pcid=pcid, cid=cid, name="tree-"+name.replace("/", " ")).replace(".pkl", ".json")
-            file = urllib.parse.quote(file)
+            # URIEncoding
+            # file = urllib.parse.quote(file)
             with open(file, mode="w+", encoding="utf-8") as fp:
                 val = ""
                 random.shuffle(attrs)
