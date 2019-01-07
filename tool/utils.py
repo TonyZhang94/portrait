@@ -1,14 +1,25 @@
 # -*- coding:utf-8 -*-
 
 import _pickle
+import inspect
 
 from portrait.settings import *
+from portrait.tool.public import Entrance
+import portrait.component.readData
+from portrait.component.readData import RegisterDBException
 
 
 def sum_freq(df):
     total = df["frequency"].sum()
     df["frequency"] = total
-    return df[:1]
+    return df[: 1]
+
+
+def sum_score(df):
+    total = df["frequency"].sum()
+    tag, target = df["tag"].values[0], df["target"].values[0]
+    df["score"], df["target"] = total, "%s-%s" % (tag, target)
+    return df[: 1]
 
 
 def dump(data, name):
@@ -25,3 +36,33 @@ def load(name):
     with open(FileBase.result.format(pcid=pcid, cid=cid, name=name), mode="rb") as fp:
         data = _pickle.load(fp)
     return data
+
+
+def read(src):
+    funcs = {name: func for name, func in inspect.getmembers(
+        portrait.component.readData, inspect.isfunction) if "_info" in name}
+    try:
+        return funcs["get_%s_info" % src]
+    except KeyError:
+        print("Read Data Function Key Error:", "get_%s_info" % src)
+    try:
+        func = funcs["get_%ss_info" % src]
+        print("Read Data Function Key Is:", "get_%ss_info" % src)
+        return func
+    except KeyError:
+        pass
+    try:
+        if "s" == src[-1]:
+            func = funcs["get_%s_info" % src[: -1]]
+            print("Read Data Function Key Is:", "get_%s_info" % src[: -1])
+            return func
+    except KeyError:
+        pass
+    raise RegisterDBException
+
+
+def make_trantab(src, dst=""):
+    trantab = dict()
+    for item in src:
+        trantab[ord(item)] = dst
+    return trantab

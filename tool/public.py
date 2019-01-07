@@ -22,3 +22,38 @@ class Quantity(object):
             setattr(instance, self.storage_name, value)
         else:
             raise ValueError("Parameter Must Be", self.interface.__name__)
+
+
+class Entrance(object):
+    def __new__(cls, *args, **kwargs):
+        if not hasattr(cls, 'instance'):
+            cls.instance = super().__new__(cls)
+        return cls.instance
+
+    def __init__(self, **kwargs):
+        if 0 != len(kwargs):
+            try:
+                self.__pcid = str(kwargs["pcid"])
+                self.__cid = str(kwargs["cid"])
+                self.__datamonth = str(kwargs["datamonth"])
+            except Exception as e:
+                raise e
+
+    @property
+    def pcid(self):
+        return self.__pcid
+
+    @property
+    def cid(self):
+        return self.__cid
+
+    @property
+    def datamonth(self):
+        return self.__datamonth
+
+    @property
+    def params(self, option=3):
+        if 3 == option:
+            return self.__pcid, self.__cid, self.__datamonth
+        else:
+            return self.__pcid, self.__cid

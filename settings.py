@@ -6,37 +6,6 @@ from DBparam import *
 DBDefault = Outer99
 
 
-class Entrance(object):
-    def __new__(cls, *args, **kwargs):
-        if not hasattr(cls, 'instance'):
-            cls.instance = super().__new__(cls)
-        return cls.instance
-
-    def __init__(self, pcid="4", cid="50012097", datamonth="201805"):
-        self.__pcid = str(pcid)
-        self.__cid = str(cid)
-        self.__datamonth = str(datamonth)
-
-    @property
-    def pcid(self):
-        return self.__pcid
-
-    @property
-    def cid(self):
-        return self.__cid
-
-    @property
-    def datamonth(self):
-        return self.__datamonth
-
-    @property
-    def params(self, option=3):
-        if 3 == option:
-            return self.__pcid, self.__cid, self.__datamonth
-        else:
-            return self.__pcid, self.__cid
-
-
 class InstantiationError(Exception):
     def __init__(self):
         err = "Instantiation Is Not Allowed"
@@ -55,7 +24,10 @@ class Parameters(object):
     dim_targets = 100
     score_base = 50.0
     min_dim = 5
-    floor_submarkets = 20
+    submarkets_threshold = 20
+    top_num_submarkets_as_standard = 20
+    top_per_submarkets_as_standard = 0.2
+    submarkets_sort_key = "biz"
 
     def __new__(cls, *args, **kwargs):
         raise InstantiationError
@@ -82,6 +54,27 @@ class EraseItem(object):
     items = []
     items.extend(wrong_all)
     erase_submarket["50012097"] = set(items)
+
+    def __new__(cls, *args, **kwargs):
+        raise InstantiationError
+
+
+class FeatureType(object):
+    sale_type = ("price", "aver_price", "biz30day", "total_sold_price")
+    sale_type = set(sale_type)
+
+    continuous_type = []
+    continuous_type = set(continuous_type)
+
+    mul_con_type = []
+    mul_con_type = set(mul_con_type)
+
+    # default type
+    discrete_type = []
+    discrete_type = set(discrete_type)
+
+    mul_dis_type = ["功能", "使用功能", "产品功能", "颜色", "颜色分类"]
+    mul_dis_type = set(mul_dis_type)
 
     def __new__(cls, *args, **kwargs):
         raise InstantiationError

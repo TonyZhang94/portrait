@@ -1,5 +1,8 @@
 # -*- coding:utf-8 -*-
 
+import random
+import urllib
+
 from portrait.tool.utils import *
 
 
@@ -19,8 +22,10 @@ class StoreTreeFrame(StoreMethod):
             base = '{"name": "' + name + '", "children":['
             file = FileBase.result.format(
                 pcid=pcid, cid=cid, name="tree-"+name.replace("/", " ")).replace(".pkl", ".json")
+            file = urllib.parse.quote(file)
             with open(file, mode="w+", encoding="utf-8") as fp:
                 val = ""
+                random.shuffle(attrs)
                 for attr in attrs:
                     if 2 == len(attr):
                         val = val + "{" + '"name": "{key}: {val}"'.format(
@@ -35,6 +40,11 @@ class StoreTreeFrame(StoreMethod):
 
 
 class StoreToDB(StoreMethod):
+    def store(self, model_portraits):
+        pass
+
+
+class StoreToNothing(StoreMethod):
     def store(self, model_portraits):
         pass
 

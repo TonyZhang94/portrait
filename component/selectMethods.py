@@ -12,7 +12,7 @@ class SelectMethod(object):
         """Action"""
 
 
-class SelectByNomination(SelectMethod):
+class SelectTargetsByNomination(SelectMethod):
     def select(self, info, dim=Parameters.dim_targets):
         info = info[["tag", "target", "grade", "frequency"]]
         abs_freq = info.groupby(["tag", "target"]).apply(sum_freq) \
@@ -32,7 +32,7 @@ class SelectByNomination(SelectMethod):
         return hot_targets
 
 
-class SelectBySigned(SelectMethod):
+class SelectTargetsBySigned(SelectMethod):
     def select(self, info, dim=Parameters.dim_targets):
         info = info[["tag", "target", "grade", "frequency"]]
         neg_list = info["grade"] == -1
@@ -54,6 +54,40 @@ class SelectBySigned(SelectMethod):
                 break
             serial += 1
         return hot_targets
+
+
+class SelectSubmarketsByNomination(SelectMethod):
+    def select(self, info, dim):
+        sm_jsons = info["submarket"].values
+        sm_map, sm_hot = dict(), dict()
+        trantab = make_trantab("{} '")
+        for line in sm_jsons:
+            items = str(line).translate(trantab).split(",")
+            for item in items:
+                sm_id, sm_name = item.split(":")
+                if sm_name in EraseItem.erase_submarket:
+                    continue
+                sm_map[sm_name] = sm_id
+                sm_hot.setdefault(sm_name, 1)
+                sm_hot[sm_name] += 1
+        sm_hot = sorted(sm_hot.items(), key=lambda x: x[1], reverse=True)
+
+        sm_all = {sm_name: num for sm_name, num in sm_hot}
+        sm_hot = {sm_name: num for sm_name, num in sm_hot if num > dim}
+        return sm_map, sm_hot, sm_all
+
+
+class SelectTopModelMethod(SelectMethod):
+    def select(self, info, submarkets):
+        info = info.drop_duplicates(["brand", "model", "submarket"])
+        models = dict()
+        for submarket in submarkets:
+            info_bak = info[info["submarket"] == submarket].sort_values([Parameters.submarkets_sort_key],
+                                                                        ascending=False)[
+                       : Parameters.top_num_submarkets_as_standard]
+            for k, v in info_bak.iterrows():
+                models.setdefault(submarket, []).append(v["serial"])
+        return models
 
 
 if __name__ == '__main__':

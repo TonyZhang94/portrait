@@ -73,9 +73,9 @@ def get_urls_info(pcid, cid, datamonth=None, src=Mode.stcLOCAL):
 
 
 @logging
-def get_submarket_info(pcid, cid, datamonth=None, src=Mode.stcLOCAL):
+def get_submarkets_info(pcid, cid, datamonth=None, src=Mode.stcLOCAL):
     fname = FileBase.info.format(name="submarkets", pcid=pcid, cid=cid)
-    fields = ["brand", "model", "biz30day", "total_sold_price", "submarket", "target_score"]
+    fields = ["brand", "model", "biz30day", "total_sold_price", "submarket", "target_score", "sku"]
     field, table = ", ".join(fields), "product_brain.product_brain_pcid{pcid}".format(pcid=pcid, cid=cid)
     if datamonth is not None:
         sql = "SELECT {field} FROM {table} WHERE cid='{cid}' and datamonth='{datamonth}';".format(
@@ -99,7 +99,7 @@ def get_sku_info(pcid, cid, datamonth, src=Mode.stcLOCAL):
 
 
 @logging
-def get_sale_info(pcid, cid, datamonth=None, src=Mode.stcLOCAL):
+def get_sales_info(pcid, cid, datamonth=None, src=Mode.stcLOCAL):
     fname = FileBase.info.format(name="sale", pcid=pcid, cid=cid)
     fields = ["brand", "model", "price", "biz30day", "total_sold_price"]
     field, table = ", ".join(fields), "product_brain.product_brain_pcid{pcid}".format(pcid=pcid, cid=cid)
@@ -109,17 +109,3 @@ def get_sale_info(pcid, cid, datamonth=None, src=Mode.stcLOCAL):
     else:
         sql = "SELECT {field} FROM {table} WHERE cid='{cid}';".format(field=field, table=table, cid=cid)
     return read_data(src, fname=fname, sql=sql, db="report_dg")
-
-
-def read(src):
-    map_method = dict()
-    map_method["targets"] = get_targets_info
-    map_method["ratings"] = get_ratings_info
-    map_method["urls"] = get_urls_info
-    map_method["submarket"] = get_submarket_info
-    map_method["sku"] = get_sku_info
-    map_method["sale"] = get_sale_info
-    try:
-        return map_method[src]
-    except KeyError:
-        raise RegisterDBException
