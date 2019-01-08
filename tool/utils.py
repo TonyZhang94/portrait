@@ -56,17 +56,18 @@ def read(src):
     try:
         return funcs["get_%s_info" % src]
     except KeyError:
-        print("Read Data Function Key Error:", "get_%s_info" % src)
+        # print("Read Data Function Key Error:", "get_%s_info" % src)
+        pass
     try:
         func = funcs["get_%ss_info" % src]
-        print("Read Data Function Key Is:", "get_%ss_info" % src)
+        # print("Read Data Function Key Is:", "get_%ss_info" % src)
         return func
     except KeyError:
         pass
     try:
         if "s" == src[-1]:
             func = funcs["get_%s_info" % src[: -1]]
-            print("Read Data Function Key Is:", "get_%s_info" % src[: -1])
+            # print("Read Data Function Key Is:", "get_%s_info" % src[: -1])
             return func
     except KeyError:
         pass
