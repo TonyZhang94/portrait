@@ -15,6 +15,7 @@ class InstantiationError(Exception):
 class Mode(object):
     stcLOCAL = True
     savePKL = True
+    storePortrait = True
 
     def __new__(cls, *args, **kwargs):
         raise InstantiationError

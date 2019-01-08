@@ -50,6 +50,7 @@ def select_submarkets(submarkets_info):
 
 
 @logging
+@ignore_warning
 def reconstruct_info(targets_info, submarket_info, hot_targets, submarkets):
     obj = ReconstructInfo()
     info = obj.process(targets_info, submarket_info, hot_targets, submarkets)

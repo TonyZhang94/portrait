@@ -1,5 +1,6 @@
 # -*- coding:utf-8 -*-
 
+from portrait.settings import Mode
 from portrait.component.readData import *
 from portrait.tool.public import Quantity, Entrance
 from portrait.component.preProcessData import *
@@ -67,8 +68,10 @@ class StorePortrait(object):
         self.storeObj = None
 
     def process(self, model_portraits):
-        self.storeObj = StoreTreeFrame()
-        # self.storeObj = StoreToNothing()
+        if Mode.storePortrait:
+            self.storeObj = StoreTreeFrame()
+        else:
+            self.storeObj = StoreToNothing()
         self.storeObj.store(model_portraits)
 
 
