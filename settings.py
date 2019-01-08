@@ -13,9 +13,16 @@ class InstantiationError(Exception):
 
 
 class Mode(object):
+    """For Test"""
     stcLOCAL = True
     savePKL = True
-    storePortrait = True
+    storePortrait = False
+    # storePortrait = True
+
+    """For Use"""
+    # stcLOCAL = False
+    # savePKL = False
+    # storePortrait = True
 
     def __new__(cls, *args, **kwargs):
         raise InstantiationError
