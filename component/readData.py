@@ -34,7 +34,7 @@ def read_data(src, fname, sql, db):
 
 
 @logging
-def get_targets_info(pcid, cid, datamonth=None, src=Mode.stcLOCAL):
+def get_targets_info(pcid, cid, datamonth=None, src=Mode.srcLOCAL):
     fname = FileBase.info.format(name="targets", pcid=pcid, cid=cid)
     fields = ["brand", "model", "tag", "target", "grade", "frequency"]
     field, table = ", ".join(fields), "comment.review_analysis_pcid{pcid}_cid{cid}".format(pcid=pcid, cid=cid)
@@ -47,7 +47,7 @@ def get_targets_info(pcid, cid, datamonth=None, src=Mode.stcLOCAL):
 
 
 @logging
-def get_ratings_info(pcid, cid, datamonth=None, src=Mode.stcLOCAL):
+def get_ratings_info(pcid, cid, datamonth=None, src=Mode.srcLOCAL):
     fname = FileBase.info.format(name="ratings", pcid=pcid, cid=cid)
     fields = ["brand", "model", "model_target_ratings"]
     field, table = ", ".join(fields), "product_brain.product_brain_pcid{pcid}".format(pcid=pcid)
@@ -60,7 +60,7 @@ def get_ratings_info(pcid, cid, datamonth=None, src=Mode.stcLOCAL):
 
 
 @logging
-def get_urls_info(pcid, cid, datamonth=None, src=Mode.stcLOCAL):
+def get_urls_info(pcid, cid, datamonth=None, src=Mode.srcLOCAL):
     fname = FileBase.info.format(name="model-urls", pcid=pcid, cid=cid)
     fields = ["brand", "model", "imageurl"]
     field, table = ", ".join(fields), "product_brain.product_brain_pcid{pcid}".format(pcid=pcid, cid=cid)
@@ -73,7 +73,7 @@ def get_urls_info(pcid, cid, datamonth=None, src=Mode.stcLOCAL):
 
 
 @logging
-def get_submarkets_info(pcid, cid, datamonth=None, src=Mode.stcLOCAL):
+def get_submarkets_info(pcid, cid, datamonth=None, src=Mode.srcLOCAL):
     fname = FileBase.info.format(name="submarkets", pcid=pcid, cid=cid)
     fields = ["brand", "model", "biz30day", "total_sold_price", "submarket", "target_score", "sku"]
     field, table = ", ".join(fields), "product_brain.product_brain_pcid{pcid}".format(pcid=pcid, cid=cid)
@@ -86,7 +86,7 @@ def get_submarkets_info(pcid, cid, datamonth=None, src=Mode.stcLOCAL):
 
 
 @logging
-def get_sku_info(pcid, cid, datamonth, src=Mode.stcLOCAL):
+def get_sku_info(pcid, cid, datamonth, src=Mode.srcLOCAL):
     fname = FileBase.info.format(name="sku", pcid=pcid, cid=cid)
     fields = ["brand", "model", "sku"]
     field, table = ", ".join(fields), "product_brain.product_brain_pcid{pcid}".format(pcid=pcid, cid=cid)
@@ -99,7 +99,7 @@ def get_sku_info(pcid, cid, datamonth, src=Mode.stcLOCAL):
 
 
 @logging
-def get_sales_info(pcid, cid, datamonth=None, src=Mode.stcLOCAL):
+def get_sales_info(pcid, cid, datamonth=None, src=Mode.srcLOCAL):
     fname = FileBase.info.format(name="sale", pcid=pcid, cid=cid)
     fields = ["brand", "model", "price", "biz30day", "total_sold_price"]
     field, table = ", ".join(fields), "product_brain.product_brain_pcid{pcid}".format(pcid=pcid, cid=cid)

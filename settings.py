@@ -28,7 +28,7 @@ class InstantiationError(Exception):
 
 class Mode(object):
     """For Test"""
-    stcLOCAL = True
+    srcLOCAL = True
     savePKL = True
     storePortrait = False
     # storePortrait = True
